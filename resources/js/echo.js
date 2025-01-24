@@ -13,9 +13,3 @@ window.Echo = new Echo({
     enabledTransports: ['ws', 'wss'],
 });
 console.log('Echo initialized');
-
-// window.Echo.channel('pingme')
-// .listen('PingEvent', (event) => {
-//     console.log(event)
-// });
-// console.log(window.Echo)

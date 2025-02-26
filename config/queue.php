@@ -72,6 +72,14 @@ return [
             'after_commit' => false,
         ],
 
+        'zeromq' => [
+            'driver' => 'zeromq',
+            'host' => env('ZEROMQ_QUEUE_HOST', 'tcp://127.0.0.1:5555'),
+            'queue' => env('ZEROMQ_QUEUE', 'default'),
+            'retry_after' => (int) env('ZEROMQ_QUEUE_RETRY_AFTER', 90),
+            'after_commit' => false,
+        ],
+
     ],
 
     /*

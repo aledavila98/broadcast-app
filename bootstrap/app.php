@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\CorsMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,7 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->append(CorsMiddleware::class);
+        $middleware->validateCsrfTokens(except: [
+            'http://localhost:8001/*',
+            'http://localhost:8000/broadcast',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

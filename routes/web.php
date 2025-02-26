@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Events\PingEvent;
 use App\Events\MessageEvent;
 use App\Events\QueueEvent;
+use App\Http\Controllers\ZmqTestController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,3 +28,5 @@ Route::post('/queued_message', function () {
     broadcast(new QueueEvent($message));
     return response()->json(['status' => 'Queued message event dispatched']);
 });
+
+Route::get('/test_zmq', [ZmqTestController::class, 'index']);

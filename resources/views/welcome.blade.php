@@ -39,6 +39,17 @@
     </div>
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function() {
+            const csrfToken = document.querySelector('[name="_token"]').value;
+            // Save csrfToken in a persistent cookie
+            function setCookie(name, value, days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                const expires = "expires=" + date.toUTCString();
+                document.cookie = name + "=" + value + ";" + expires + ";path=/";
+            }
+
+            setCookie('csrfToken', csrfToken, 7); // Save for 7 days
+
             /**
              * Sends message to the server to trigger the broadcast
              * **/
@@ -52,7 +63,7 @@
                 window.axios.post(route, data,
                 {
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('[name="_token"]').value
+                        'X-CSRF-TOKEN': csrfToken
                     }
                 }).then(function(response) {
                     console.log(response);

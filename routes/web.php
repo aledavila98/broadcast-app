@@ -12,7 +12,11 @@ Route::get('/', function () {
 
 Route::post('/broadcast', function () {
     $message = request()->input('message', 'ping me pls');
-    broadcast(new PingEvent($message));
+    try {
+        broadcast(new PingEvent($message));
+    } catch (\Throwable $th) {
+        return response()->json(['status' => 'Failed to broadcast event ' . $th->getMessage()]);
+    }
     return response()->json(['status' => 'Ping event dispatched']);
 });
 

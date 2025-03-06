@@ -40,15 +40,9 @@
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function() {
             const csrfToken = document.querySelector('[name="_token"]').value;
-            // Save csrfToken in a persistent cookie
-            function setCookie(name, value, days) {
-                const date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                const expires = "expires=" + date.toUTCString();
-                document.cookie = name + "=" + value + ";" + expires + ";path=/";
-            }
 
-            setCookie('csrfToken', csrfToken, 7); // Save for 7 days
+            var pingmeChannel = window.pusher.subscribe('pingme');
+            var queuedChannel = window.pusher.subscribe('queued_testing');
 
             /**
              * Sends message to the server to trigger the broadcast
@@ -76,7 +70,7 @@
              * Subscribe to the channel and listen for the event
              * **/
             var testEcho1 = document.getElementById('test-echo-1');
-            window.Echo.channel('pingme').listen('PingEvent', (e) => {
+            pingmeChannel.bind('App\\\Events\\\PingEvent', function(e) {
                 console.log(e);
                 // Update the DOM with the event data
                 const eventContainer = testEcho1;
@@ -87,7 +81,7 @@
             });
 
             var testEcho2 = document.getElementById('test-echo-2');
-            window.Echo.channel('pingme').listen('MessageEvent', (e) => {
+            pingmeChannel.bind('App\\\Events\\\MessageEvent', function(e) {
                 console.log(e);
                 // Update the DOM with the event data
                 const eventContainer = testEcho2;
@@ -98,7 +92,7 @@
             });
 
             var testQueue = document.getElementById('test-queue');
-            window.Echo.channel('queued_testing').listen('QueueEvent', (e) => {
+            queuedChannel.bind('App\\\Events\\\QueueEvent', function(e) {
                 console.log(e);
                 // Update the DOM with the event data
                 const eventContainer = testQueue;
